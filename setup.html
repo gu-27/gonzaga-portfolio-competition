@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Setup — Gonzaga Portfolio Competition</title>
+  <meta name="description" content="From laptop to live portfolio. Step-by-step setup for GitHub, VS Code, and GitHub Pages — zero experience required.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────── -->
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Gonzaga Portfolio Competition home">
+      <div class="nav-logo-mark" aria-hidden="true"><span>GPC</span></div>
+      <div class="nav-logo-text">
+        Portfolio Competition
+        <small>Gonzaga SBA · MIS</small>
+      </div>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html"   class="nav-link">Overview</a></li>
+      <li><a href="setup.html"   class="nav-link" aria-current="page">Setup</a></li>
+      <li><a href="process.html" class="nav-link">Process</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- ── Page Hero ─────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Tech Setup</span>
+      <h1>From laptop to live portfolio.</h1>
+      <p class="page-hero-sub">
+        Zero experience required. This page walks you through every step —
+        GitHub, VS Code, and publishing your site to the internet.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Opening Frame ─────────────────────────────────────── -->
+  <section class="section" style="padding-bottom: 0;">
+    <div class="container-narrow">
+      <div class="frame-box">
+        <p>
+          <strong>If you've never used GitHub or written code before, that's fine.</strong>
+          This page assumes zero experience. The setup will take a few hours —
+          maybe longer — and it will involve frustration. That frustration is part of the point.
+        </p>
+        <p>
+          Every student who completes the setup walks away with a story they can tell in
+          interviews: <em>"I was given general direction, no template, and I figured it out."</em>
+          Employers love that story. Embrace the struggle.
+        </p>
+        <p>
+          If you get stuck, that's normal. Read the troubleshooting section at the bottom,
+          ask Claude Code for help, or search the web. Working through a problem you've never
+          seen before is the skill. You're already practicing it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What You'll Need ──────────────────────────────────── -->
+  <section class="section section--cream" id="what-youll-need">
+    <div class="container-narrow">
+      <div class="section-header">
+        <span class="section-label">Before You Start</span>
+        <h2>What You'll Need</h2>
+      </div>
+      <ul class="checklist">
+        <li>A laptop — Mac or Windows both work fine</li>
+        <li>An email address you check regularly</li>
+        <li>2–4 hours of uninterrupted time (you can break this into multiple sessions)</li>
+        <li>A willingness to search for answers when something doesn't work</li>
+      </ul>
+      <div class="callout mt-md">
+        <div class="callout-label">💡 Note</div>
+        <p>
+          You do not need to know how to code. You will learn just enough to get your portfolio live —
+          and more importantly, you'll understand <em>why</em> each step exists.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Steps ─────────────────────────────────────────────── -->
+  <section class="section" id="steps">
+    <div class="container-narrow">
+      <div class="section-header">
+        <span class="section-label">The Setup</span>
+        <h2>Six Steps to Live</h2>
+      </div>
+
+      <div class="steps">
+
+        <!-- Step 1: GitHub Account -->
+        <div class="step" id="step-1">
+          <div class="step-header">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-meta">
+              <h3>Create a GitHub Account</h3>
+              <span class="step-time">⏱ 10–15 minutes</span>
+            </div>
+          </div>
+          <div class="step-body">
+            <p>
+              <strong>What GitHub is:</strong> GitHub is a platform where developers store, share, and
+              collaborate on code. Think of it as Google Drive, but for code — except the files are
+              version-controlled (meaning you can see every change ever made) and publicly visible.
+            </p>
+            <p>
+              When you publish a portfolio through GitHub Pages (Step 5), anyone in the world with
+              your URL can see your work. That's what makes it a real artifact.
+            </p>
+            <p><strong>How to sign up:</strong></p>
+            <ol>
+              <li>Go to <a href="https://github.com" target="_blank" rel="noopener">github.com</a></li>
+              <li>Click <strong>Sign up</strong> and enter your email address</li>
+              <li>Choose a username — this becomes part of your portfolio URL, so pick something professional. <code>firstname-lastname</code> or <code>firstnamelastname</code> works well.</li>
+              <li>Verify your email address</li>
+            </ol>
+            <div class="callout callout--story mt-sm">
+              <div class="callout-label">🎯 Why this matters</div>
+              <p>
+                Recruiters look at GitHub profiles. The earlier you start building one, the more
+                history you have when it matters. Your GitHub profile from this summer is infrastructure
+                for the rest of your career.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: VS Code -->
+        <div class="step" id="step-2">
+          <div class="step-header">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-meta">
+              <h3>Install Visual Studio Code</h3>
+              <span class="step-time">⏱ 10 minutes</span>
+            </div>
+          </div>
+          <div class="step-body">
+            <p>
+              <strong>What it is:</strong> VS Code is a free code editor made by Microsoft. It's what
+              most developers use to write and edit files. You'll use it to write HTML and CSS for
+              your portfolio.
+            </p>
+            <ol>
+              <li>Go to <a href="https://code.visualstudio.com" target="_blank" rel="noopener">code.visualstudio.com</a></li>
+              <li>Click the download button for your operating system (Mac or Windows)</li>
+              <li>Install it like any other application — drag to Applications on Mac, run the installer on Windows</li>
+              <li>Open VS Code and take a few minutes to look around. Don't worry about understanding everything — you'll learn as you go.</li>
+            </ol>
+            <p><strong>Basic orientation:</strong></p>
+            <ul>
+              <li>Left sidebar: your file explorer — this is where you open folders and see your files</li>
+              <li>Main area: your editor — this is where you write code</li>
+              <li>Bottom bar: terminal and status info — you'll use the terminal in later steps</li>
+            </ul>
+            <div class="callout mt-sm">
+              <div class="callout-label">💡 Tip</div>
+              <p>
+                Press <code>Ctrl + `</code> (Windows) or <code>Cmd + `</code> (Mac) to open a terminal
+                directly inside VS Code. You'll use this a lot.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Claude Code (Optional) -->
+        <div class="step" id="step-3">
+          <div class="step-header">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-meta">
+              <h3>Install Claude Code <span style="font-weight:400; font-size:.85rem; color:var(--gray-600);">(Optional but Recommended)</span></h3>
+              <span class="step-time">⏱ 15–30 minutes</span>
+            </div>
+          </div>
+          <div class="step-body">
+            <p>
+              <strong>What it is:</strong> Claude Code is an AI assistant that runs directly inside
+              VS Code. Unlike a chat window, it can read your actual files, write code with you,
+              explain errors, and help you think through decisions — all while staying in context
+              with what you're actually building.
+            </p>
+            <p>
+              You are allowed — and encouraged — to use AI tools in this competition. Claude Code
+              is the recommended option because it's the most useful for a project like this.
+            </p>
+            <div class="callout callout--tip">
+              <div class="callout-label">⚡ Why it's a superpower</div>
+              <p>
+                Claude Code doesn't replace your thinking — it amplifies it. If you bring clear
+                direction and real decisions, it will execute faster and better than you could alone.
+                If you bring nothing, it produces nothing useful. Your judgment is still the product.
+              </p>
+            </div>
+            <!-- TODO: Replace href with link to John's existing Claude Code instructions repo -->
+            <p class="mt-sm">
+              Installation instructions and setup guide:
+              <a href="#" aria-label="Claude Code setup instructions (link coming soon)">Claude Code Setup Guide →</a>
+              <em style="color:var(--gray-600); font-size:.85rem;">(Link coming soon — check back here before you start)</em>
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4: Create Repo -->
+        <div class="step" id="step-4">
+          <div class="step-header">
+            <div class="step-num" aria-hidden="true">4</div>
+            <div class="step-meta">
+              <h3>Create Your Portfolio Repository</h3>
+              <span class="step-time">⏱ 10 minutes</span>
+            </div>
+          </div>
+          <div class="step-body">
+            <p>
+              <strong>What a repository is:</strong> A repository (or "repo") is a folder on GitHub
+              that contains all your project files. Every change you make is tracked. Think of it as
+              a save file for your entire project — except it saves every version, forever.
+            </p>
+            <ol>
+              <li>Log into GitHub at <a href="https://github.com" target="_blank" rel="noopener">github.com</a></li>
+              <li>Click the <strong>+</strong> icon in the top-right corner, then <strong>New repository</strong></li>
+              <li>
+                Name your repository. For GitHub Pages to work cleanly, name it:
+                <pre><code>your-username.github.io</code></pre>
+                Replace <code>your-username</code> with your actual GitHub username, exactly.
+              </li>
+              <li>Set visibility to <strong>Public</strong> — required for free GitHub Pages hosting</li>
+              <li>Check <strong>Add a README file</strong></li>
+              <li>Click <strong>Create repository</strong></li>
+            </ol>
+            <div class="callout callout--tip mt-sm">
+              <div class="callout-label">⚡ The naming convention matters</div>
+              <p>
+                If your username is <code>jsmith</code>, your repo should be named
+                <code>jsmith.github.io</code> — exactly. This is the magic incantation that tells
+                GitHub to serve it as a personal site at that URL.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: GitHub Pages -->
+        <div class="step" id="step-5">
+          <div class="step-header">
+            <div class="step-num" aria-hidden="true">5</div>
+            <div class="step-meta">
+              <h3>Enable GitHub Pages</h3>
+              <span class="step-time">⏱ 5 minutes</span>
+            </div>
+          </div>
+          <div class="step-body">
+            <p>
+              GitHub Pages is a free hosting service built into GitHub. Once enabled,
+              it automatically publishes your repository as a live website at
+              <code>your-username.github.io</code> — no server setup required.
+            </p>
+            <ol>
+              <li>In your new repository, click the <strong>Settings</strong> tab (near the top)</li>
+              <li>In the left sidebar, scroll down and click <strong>Pages</strong></li>
+              <li>Under <strong>Branch</strong>, select <code>main</code> and click <strong>Save</strong></li>
+              <li>Wait about 60–90 seconds, then reload the Settings → Pages view</li>
+              <li>You'll see a banner: <em>"Your site is live at https://your-username.github.io"</em></li>
+            </ol>
+            <div class="callout mt-sm">
+              <div class="callout-label">💡 Note</div>
+              <p>
+                The site will show just your README for now — and it won't look like much.
+                That's fine. You've done something real: you have a live URL. Everything from
+                here is making that URL worth visiting.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 6: First Commit -->
+        <div class="step" id="step-6">
+          <div class="step-header">
+            <div class="step-num" aria-hidden="true">6</div>
+            <div class="step-meta">
+              <h3>Your First Commit</h3>
+              <span class="step-time">⏱ 20–30 minutes</span>
+            </div>
+          </div>
+          <div class="step-body">
+            <p>
+              A <strong>commit</strong> is a snapshot of your files at a moment in time. Every time
+              you "push" changes to GitHub, you're creating a commit with a message describing what
+              you changed. It's like a save point with a note attached.
+            </p>
+            <p><strong>Clone your repository to your laptop:</strong></p>
+            <p>
+              In VS Code, open the terminal (<code>Cmd + `</code> on Mac, <code>Ctrl + `</code> on Windows),
+              then run:
+            </p>
+            <pre><code><span class="code-comment"># Replace YOUR-USERNAME with your actual GitHub username</span>
+git clone https://github.com/YOUR-USERNAME/YOUR-USERNAME.github.io
+cd YOUR-USERNAME.github.io</code></pre>
+            <p><strong>Create your first file:</strong></p>
+            <p>
+              In VS Code, create a file called <code>index.html</code> in that folder
+              and add some content. Even a simple placeholder works:
+            </p>
+            <pre><code><span class="code-key">&lt;!DOCTYPE html&gt;</span>
+<span class="code-key">&lt;html&gt;</span>
+<span class="code-key">&lt;head&gt;</span>
+  <span class="code-key">&lt;title&gt;</span><span class="code-val">My Portfolio</span><span class="code-key">&lt;/title&gt;</span>
+<span class="code-key">&lt;/head&gt;</span>
+<span class="code-key">&lt;body&gt;</span>
+  <span class="code-key">&lt;h1&gt;</span><span class="code-val">Coming soon.</span><span class="code-key">&lt;/h1&gt;</span>
+<span class="code-key">&lt;/body&gt;</span>
+<span class="code-key">&lt;/html&gt;</span></code></pre>
+            <p><strong>Push it to GitHub:</strong></p>
+            <pre><code>git add index.html
+git commit -m "First commit — hello world"
+git push</code></pre>
+            <div class="callout callout--story mt-sm">
+              <div class="callout-label">🎯 What just happened</div>
+              <p>
+                You created a file, staged it (<code>git add</code>), labeled the snapshot
+                (<code>git commit</code>), and sent it to GitHub (<code>git push</code>).
+                Within 60–90 seconds, your live URL will show your new file. Refresh
+                <code>https://your-username.github.io</code> and see for yourself.
+              </p>
+              <p>
+                This is the workflow you'll repeat hundreds of times this summer. It gets fast.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /steps -->
+    </div>
+  </section>
+
+  <!-- ── Troubleshooting ────────────────────────────────────── -->
+  <section class="section section--cream" id="troubleshooting">
+    <div class="container-narrow">
+      <div class="section-header">
+        <span class="section-label">When Things Break</span>
+        <h2>Troubleshooting</h2>
+        <p>Things will go wrong. Here's how to handle it.</p>
+      </div>
+
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>git push is asking for a username and password</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              GitHub deprecated password authentication over HTTPS. You need to set up a
+              <strong>Personal Access Token (PAT)</strong> or use SSH instead.
+            </p>
+            <p>
+              Easiest fix: go to GitHub → Settings → Developer settings → Personal access tokens →
+              Generate new token. Give it repo permissions. Use this token as your "password"
+              when git asks. Store it somewhere safe — you can't see it again after creation.
+            </p>
+            <p>
+              Even easier: ask Claude Code to walk you through setting up SSH authentication.
+              Once done, you'll never deal with this again.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>My GitHub Pages site is showing a 404</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-a">
+            <p>Two likely causes:</p>
+            <ul>
+              <li><strong>Pages isn't enabled yet</strong> — double-check Settings → Pages and that the branch is set to <code>main</code></li>
+              <li><strong>No index.html file</strong> — GitHub Pages looks for a file named exactly <code>index.html</code> in the root of your repo. If it doesn't exist, you get a 404.</li>
+            </ul>
+            <p>Wait 2–3 minutes after any change and force-refresh your browser (<code>Cmd + Shift + R</code> on Mac).</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>git commit says "Author identity unknown"</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-a">
+            <p>Git doesn't know who you are yet. Tell it:</p>
+            <pre><code>git config --global user.email "you@example.com"
+git config --global user.name "Your Name"</code></pre>
+            <p>Use the same email address as your GitHub account. Then run your commit again.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>I got an error I don't understand</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              Copy the exact error message. Then:
+            </p>
+            <ol>
+              <li><strong>Ask Claude Code</strong> — paste the error and say "I was doing X and got this error." It will explain what went wrong and how to fix it.</li>
+              <li><strong>Search the exact error text on Google</strong> — you are almost certainly not the first person to hit this. GitHub Docs and Stack Overflow are excellent resources.</li>
+              <li><strong>GitHub Docs</strong> at <a href="https://docs.github.com" target="_blank" rel="noopener">docs.github.com</a> — comprehensive, well-written, and has a good search.</li>
+            </ol>
+            <p>
+              The process of diagnosing and fixing an error you've never seen before is exactly
+              what employers pay people to do. You're doing real work right now.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>I have no idea if I'm doing this right</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-a">
+            <p>
+              Here's the benchmark: <strong>does your URL load a page?</strong> If yes, you're doing it right.
+              Everything else is refinement.
+            </p>
+            <p>
+              The steps in this guide are the exact steps used by professionals. If you've followed them
+              and your site is live, you've done something real — not a simulation of something real.
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── You Did It ─────────────────────────────────────────── -->
+  <section class="section" id="you-did-it">
+    <div class="container-narrow">
+      <span class="section-label">What's Next</span>
+      <h2>You have a live site. Now what?</h2>
+      <p class="mt-sm">
+        The setup is done. You have a GitHub account, a public repository, a live URL, and at least
+        one commit. That's the foundation. Everything from here is what goes on top of it.
+      </p>
+      <p>
+        Head to the <a href="process.html">Process page</a> for guidance on deciding what to build,
+        how to think about your portfolio, and how to handle common situations like internship
+        confidentiality, passion projects, and what "polished" actually means.
+      </p>
+      <div class="hero-cta mt-md">
+        <a href="process.html" class="btn btn--primary">Read the Process Guide →</a>
+        <a href="index.html#categories" class="btn btn--secondary">Review the Categories</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>Gonzaga Portfolio Competition</strong><br>
+      School of Business Administration &nbsp;·&nbsp; MIS Discipline<br>
+      Facilitated by John Spencer, Associate Professor of MIS
+    </div>
+    <nav aria-label="Footer navigation">
+      <ul class="footer-links">
+        <li><a href="index.html">Overview</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <li><a href="setup.html">Setup</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <li><a href="process.html">Process</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <li><a href="#" aria-label="GitHub repository (link coming soon)">GitHub</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <!-- TODO: Replace with actual contact email -->
+        <li><a href="mailto:TBD@gonzaga.edu">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const links  = document.getElementById('nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+  }
+</script>
+</body>
+</html>
