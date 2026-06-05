@@ -4,11 +4,98 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tech Setup — Gonzaga Portfolio Competition</title>
-  <meta name="description" content="From laptop to live portfolio. Step-by-step setup for GitHub, VS Code, and GitHub Pages — zero experience required.">
+  <meta name="description" content="From laptop to live portfolio. Start with an AI chat guide, then work through GitHub, VS Code, and GitHub Pages — zero experience required.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .prompt-box {
+      background: #0D1117;
+      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: var(--r-lg);
+      padding: 1.5rem;
+      position: relative;
+      margin-top: 1.25rem;
+    }
+    .prompt-box pre {
+      margin: 0;
+      background: none;
+      border: none;
+      padding: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: .82rem;
+      line-height: 1.75;
+      color: #C9D1D9;
+    }
+    .copy-btn {
+      position: absolute;
+      top: .75rem;
+      right: .75rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.65);
+      font-family: var(--font);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      padding: .35rem .75rem;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.14); color: #fff; }
+    .copy-btn.copied { background: rgba(43,179,163,.2); color: #5BC8C2; border-color: rgba(43,179,163,.3); }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    @media (min-width: 600px) { .option-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .option-card {
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--r-lg);
+      padding: 1.5rem;
+      background: var(--white);
+    }
+    .option-card.recommended { border-color: var(--navy); }
+    .option-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .option-label.rec { color: var(--navy); }
+    .option-label.free { color: #2DA44E; }
+    .option-card h4 { font-size: 1rem; margin-bottom: .5rem; }
+    .option-card p { font-size: .88rem; color: var(--gray-600); max-width: none; }
+    .option-card .btn { margin-top: 1rem; font-size: .82rem; padding: .55rem 1rem; }
+
+    .ai-callout {
+      background: rgba(10,50,112,.06);
+      border: 1.5px solid rgba(10,50,112,.2);
+      border-radius: var(--r-md);
+      padding: .9rem 1.1rem;
+      margin-top: 1rem;
+      font-size: .88rem;
+    }
+    .ai-callout strong { color: var(--navy); }
+
+    .hello-world-box {
+      background: var(--navy);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      color: var(--white);
+    }
+    .hello-world-box h3 { color: var(--white); margin-bottom: .75rem; }
+    .hello-world-box p { color: rgba(255,255,255,.72); max-width: none; margin-bottom: .75rem; }
+    .hello-world-box .prompt-box { margin-top: 1rem; }
+  </style>
 </head>
 <body>
 
@@ -19,7 +106,7 @@
       <div class="nav-logo-mark" aria-hidden="true"><span>GPC</span></div>
       <div class="nav-logo-text">
         Portfolio Competition
-        <small>Gonzaga SBA · MIS</small>
+        <small>Gonzaga · Information Systems</small>
       </div>
     </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
@@ -43,64 +130,90 @@
       <span class="section-label">Tech Setup</span>
       <h1>From laptop to live portfolio.</h1>
       <p class="page-hero-sub">
-        Zero experience required. This page walks you through every step —
-        GitHub, VS Code, and publishing your site to the internet.
+        Zero experience required. Start with an AI guide, then use this page as your reference.
       </p>
     </div>
   </section>
 
-  <!-- ── Opening Frame ─────────────────────────────────────── -->
-  <section class="section" style="padding-bottom: 0;">
+  <!-- ── Step 0: Start Your AI Guide ──────────────────────── -->
+  <section class="section section--cream" id="ai-guide" style="border-bottom: 2px solid var(--navy);">
     <div class="container-narrow">
-      <div class="frame-box">
+      <span class="section-label">Start Here — Before Anything Else</span>
+      <h2>Open an AI chat session first.</h2>
+      <p class="mt-sm">
+        Before you install anything, open a separate browser tab and start a chat with an AI assistant.
+        That AI session will be your guide through the entire setup process: it will walk you through
+        each tool, explain what you are doing and why, and help you troubleshoot anything that breaks.
+        This page exists as a reference and context, not as a replacement for that conversation.
+      </p>
+      <p class="mt-sm">
+        <strong>Recommended:</strong> Use <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+        (free tier works for this). Any capable AI assistant will do.
+      </p>
+      <p class="mt-sm">
+        Copy the prompt below and paste it as your very first message. The AI will take it from there.
+      </p>
+
+      <div class="prompt-box">
+        <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" aria-label="Copy prompt to clipboard">Copy</button>
+        <pre id="bootstrap-prompt">You are my setup guide for the Gonzaga Portfolio Competition. I am a Gonzaga student and I may have zero experience with GitHub, VS Code, or any developer tools. Please help me get everything working from scratch.
+
+Here is what I need to accomplish:
+1. Create a GitHub account (if I have not already)
+2. Install Visual Studio Code
+3. Install an AI coding assistant inside VS Code — either the Claude Code extension (requires a Claude Pro subscription) or the GitHub Copilot extension (free with my GitHub account)
+4. Create a new public GitHub repository for my portfolio
+5. Enable GitHub Pages so my repository is live at my-username.github.io
+6. Build and publish a practice "Hello World" page in my personal colors to confirm everything is working end to end
+
+Please start by asking me two things:
+- Am I on a Mac or Windows laptop?
+- Which of these steps have I already completed?
+
+Then guide me through each step one at a time. Explain what each tool is in plain English before asking me to install it. If something goes wrong, ask me to copy and paste the exact error message before suggesting a fix. Do not skip ahead or give me more than one step at a time. I am in no rush — I want to understand what I am doing, not just follow instructions blindly.</pre>
+      </div>
+
+      <div class="callout callout--tip mt-md">
+        <div class="callout-label">⚡ How to use both at once</div>
         <p>
-          <strong>If you've never used GitHub or written code before, that's fine.</strong>
-          This page assumes zero experience. The setup will take a few hours —
-          maybe longer — and it will involve frustration. That frustration is part of the point.
-        </p>
-        <p>
-          Every student who completes the setup walks away with a story they can tell in
-          interviews: <em>"I was given general direction, no template, and I figured it out."</em>
-          Employers love that story. Embrace the struggle.
-        </p>
-        <p>
-          If you get stuck, that's normal. Read the troubleshooting section at the bottom,
-          ask Claude Code for help, or search the web. Working through a problem you've never
-          seen before is the skill. You're already practicing it.
+          Keep your AI chat open in one tab and this page open in another.
+          Use the AI to guide the actual work. Use this page to understand the bigger picture
+          of what each step is for. They complement each other.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- ── What You'll Need ──────────────────────────────────── -->
-  <section class="section section--cream" id="what-youll-need">
+  <!-- ── What You Will Need ────────────────────────────────── -->
+  <section class="section" id="what-youll-need">
     <div class="container-narrow">
       <div class="section-header">
         <span class="section-label">Before You Start</span>
-        <h2>What You'll Need</h2>
+        <h2>What You Will Need</h2>
       </div>
       <ul class="checklist">
-        <li>A laptop — Mac or Windows both work fine</li>
+        <li>A laptop, Mac or Windows, both work fine</li>
         <li>An email address you check regularly</li>
-        <li>2–4 hours of uninterrupted time (you can break this into multiple sessions)</li>
-        <li>A willingness to search for answers when something doesn't work</li>
+        <li>2 to 4 hours of patience, which you can split across multiple sessions</li>
+        <li>A willingness to search for answers when something does not work</li>
       </ul>
       <div class="callout mt-md">
         <div class="callout-label">💡 Note</div>
         <p>
-          You do not need to know how to code. You will learn just enough to get your portfolio live —
-          and more importantly, you'll understand <em>why</em> each step exists.
+          You do not need to know how to code. You will learn just enough to get your portfolio live,
+          and more importantly, you will understand why each step exists.
         </p>
       </div>
     </div>
   </section>
 
   <!-- ── Steps ─────────────────────────────────────────────── -->
-  <section class="section" id="steps">
+  <section class="section section--cream" id="steps">
     <div class="container-narrow">
       <div class="section-header">
         <span class="section-label">The Setup</span>
         <h2>Six Steps to Live</h2>
+        <p>Your AI guide will walk you through each of these. Use this section as a reference.</p>
       </div>
 
       <div class="steps">
@@ -111,24 +224,23 @@
             <div class="step-num" aria-hidden="true">1</div>
             <div class="step-meta">
               <h3>Create a GitHub Account</h3>
-              <span class="step-time">⏱ 10–15 minutes</span>
+              <span class="step-time">⏱ 10 to 15 minutes</span>
             </div>
           </div>
           <div class="step-body">
             <p>
               <strong>What GitHub is:</strong> GitHub is a platform where developers store, share, and
-              collaborate on code. Think of it as Google Drive, but for code — except the files are
-              version-controlled (meaning you can see every change ever made) and publicly visible.
+              collaborate on code. Think of it as Google Drive for code, except the files are
+              version controlled and publicly visible by default.
             </p>
             <p>
-              When you publish a portfolio through GitHub Pages (Step 5), anyone in the world with
-              your URL can see your work. That's what makes it a real artifact.
+              When you publish a portfolio through GitHub Pages in Step 5, anyone with
+              your URL can see your work. That is what makes it a real artifact, not a class submission.
             </p>
-            <p><strong>How to sign up:</strong></p>
             <ol>
               <li>Go to <a href="https://github.com" target="_blank" rel="noopener">github.com</a></li>
               <li>Click <strong>Sign up</strong> and enter your email address</li>
-              <li>Choose a username — this becomes part of your portfolio URL, so pick something professional. <code>firstname-lastname</code> or <code>firstnamelastname</code> works well.</li>
+              <li>Choose a username. This becomes part of your portfolio URL, so pick something professional. <code>firstname-lastname</code> or <code>firstnamelastname</code> works well.</li>
               <li>Verify your email address</li>
             </ol>
             <div class="callout callout--story mt-sm">
@@ -153,66 +265,87 @@
           </div>
           <div class="step-body">
             <p>
-              <strong>What it is:</strong> VS Code is a free code editor made by Microsoft. It's what
-              most developers use to write and edit files. You'll use it to write HTML and CSS for
-              your portfolio.
+              <strong>What it is:</strong> VS Code is a free code editor made by Microsoft and used
+              by millions of developers. You will use it to write HTML and CSS for your portfolio,
+              and to run your AI coding assistant.
             </p>
             <ol>
               <li>Go to <a href="https://code.visualstudio.com" target="_blank" rel="noopener">code.visualstudio.com</a></li>
-              <li>Click the download button for your operating system (Mac or Windows)</li>
-              <li>Install it like any other application — drag to Applications on Mac, run the installer on Windows</li>
-              <li>Open VS Code and take a few minutes to look around. Don't worry about understanding everything — you'll learn as you go.</li>
+              <li>Download for your operating system, Mac or Windows</li>
+              <li>Install it like any other application</li>
+              <li>Open VS Code. Left sidebar is your file explorer. Center is your editor. Bottom bar has the terminal.</li>
             </ol>
-            <p><strong>Basic orientation:</strong></p>
-            <ul>
-              <li>Left sidebar: your file explorer — this is where you open folders and see your files</li>
-              <li>Main area: your editor — this is where you write code</li>
-              <li>Bottom bar: terminal and status info — you'll use the terminal in later steps</li>
-            </ul>
             <div class="callout mt-sm">
               <div class="callout-label">💡 Tip</div>
               <p>
-                Press <code>Ctrl + `</code> (Windows) or <code>Cmd + `</code> (Mac) to open a terminal
-                directly inside VS Code. You'll use this a lot.
+                Press <code>Ctrl + `</code> on Windows or <code>Cmd + `</code> on Mac to open a terminal
+                directly inside VS Code. You will use this for git commands.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- Step 3: Claude Code (Optional) -->
+        <!-- Step 3: AI Assistant — Option A or B -->
         <div class="step" id="step-3">
           <div class="step-header">
             <div class="step-num" aria-hidden="true">3</div>
             <div class="step-meta">
-              <h3>Install Claude Code <span style="font-weight:400; font-size:.85rem; color:var(--gray-600);">(Optional but Recommended)</span></h3>
-              <span class="step-time">⏱ 15–30 minutes</span>
+              <h3>Install Your AI Coding Assistant</h3>
+              <span class="step-time">⏱ 15 to 30 minutes</span>
             </div>
           </div>
           <div class="step-body">
             <p>
-              <strong>What it is:</strong> Claude Code is an AI assistant that runs directly inside
-              VS Code. Unlike a chat window, it can read your actual files, write code with you,
-              explain errors, and help you think through decisions — all while staying in context
-              with what you're actually building.
+              You need an AI assistant inside VS Code. It reads your actual files, writes code
+              alongside you, explains errors, and keeps context with what you are building.
+              This is not optional, it is how you will do most of your work on this project.
             </p>
-            <p>
-              You are allowed — and encouraged — to use AI tools in this competition. Claude Code
-              is the recommended option because it's the most useful for a project like this.
-            </p>
-            <div class="callout callout--tip">
-              <div class="callout-label">⚡ Why it's a superpower</div>
+            <p>Pick the option that fits your situation:</p>
+
+            <div class="option-grid">
+              <div class="option-card recommended">
+                <p class="option-label rec">Recommended</p>
+                <h4>Claude Code</h4>
+                <p>
+                  The most capable option for a project like this. Reads your files, holds
+                  context across a conversation, and reasons about decisions rather than just
+                  completing code.
+                </p>
+                <p>
+                  <strong>Requires a Claude Pro subscription</strong> at
+                  <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>
+                  (~$20/month). If cost is a concern, reach out to John Spencer directly.
+                  This should not be a barrier.
+                </p>
+                <!-- TODO: Replace href with link to John's existing Claude Code instructions repo once available -->
+                <a href="#" class="btn btn--secondary" aria-label="Claude Code installation guide (link coming soon)">Claude Code Guide →</a>
+              </div>
+
+              <div class="option-card">
+                <p class="option-label free">Free with GitHub</p>
+                <h4>GitHub Copilot</h4>
+                <p>
+                  A solid AI coding assistant built by GitHub and included free with your
+                  GitHub account (students qualify automatically). Less conversational than
+                  Claude Code, but genuinely useful for writing and editing code.
+                </p>
+                <p>
+                  Install the GitHub Copilot extension inside VS Code, then sign in with
+                  your GitHub account. That is all it takes.
+                </p>
+                <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.copilot" target="_blank" rel="noopener" class="btn btn--secondary">Copilot Extension →</a>
+              </div>
+            </div>
+
+            <div class="callout callout--tip mt-md">
+              <div class="callout-label">⚡ How to use it going forward</div>
               <p>
-                Claude Code doesn't replace your thinking — it amplifies it. If you bring clear
-                direction and real decisions, it will execute faster and better than you could alone.
-                If you bring nothing, it produces nothing useful. Your judgment is still the product.
+                Once your AI assistant is installed, do your work through it. For the remaining
+                steps on this page, and for everything you build after, tell the AI what you
+                want to do and let it guide you through the commands and code. You do not need
+                to memorize git syntax. You need to be able to describe what you want clearly.
               </p>
             </div>
-            <!-- TODO: Replace href with link to John's existing Claude Code instructions repo -->
-            <p class="mt-sm">
-              Installation instructions and setup guide:
-              <a href="#" aria-label="Claude Code setup instructions (link coming soon)">Claude Code Setup Guide →</a>
-              <em style="color:var(--gray-600); font-size:.85rem;">(Link coming soon — check back here before you start)</em>
-            </p>
           </div>
         </div>
 
@@ -227,28 +360,28 @@
           </div>
           <div class="step-body">
             <p>
-              <strong>What a repository is:</strong> A repository (or "repo") is a folder on GitHub
-              that contains all your project files. Every change you make is tracked. Think of it as
-              a save file for your entire project — except it saves every version, forever.
+              <strong>What a repository is:</strong> A repository is a folder on GitHub that
+              contains all your project files and the full history of every change ever made.
+              Think of it as a save file for your entire project that never loses anything.
             </p>
+            <div class="ai-callout">
+              <strong>Do this through your AI chat.</strong> Tell it: "Help me create a new
+              public GitHub repository named my-username.github.io." It will walk you through
+              every click and explain why the naming matters.
+            </div>
+            <p class="mt-sm">If you prefer to do it manually:</p>
             <ol>
-              <li>Log into GitHub at <a href="https://github.com" target="_blank" rel="noopener">github.com</a></li>
-              <li>Click the <strong>+</strong> icon in the top-right corner, then <strong>New repository</strong></li>
-              <li>
-                Name your repository. For GitHub Pages to work cleanly, name it:
-                <pre><code>your-username.github.io</code></pre>
-                Replace <code>your-username</code> with your actual GitHub username, exactly.
-              </li>
-              <li>Set visibility to <strong>Public</strong> — required for free GitHub Pages hosting</li>
+              <li>Log into GitHub and click the <strong>+</strong> icon, then <strong>New repository</strong></li>
+              <li>Name it <code>your-username.github.io</code> exactly, with your actual GitHub username</li>
+              <li>Set visibility to <strong>Public</strong></li>
               <li>Check <strong>Add a README file</strong></li>
               <li>Click <strong>Create repository</strong></li>
             </ol>
             <div class="callout callout--tip mt-sm">
-              <div class="callout-label">⚡ The naming convention matters</div>
+              <div class="callout-label">⚡ The naming is important</div>
               <p>
-                If your username is <code>jsmith</code>, your repo should be named
-                <code>jsmith.github.io</code> — exactly. This is the magic incantation that tells
-                GitHub to serve it as a personal site at that URL.
+                If your username is <code>jsmith</code>, name the repo <code>jsmith.github.io</code>.
+                That exact pattern tells GitHub to serve it as your personal site.
               </p>
             </div>
           </div>
@@ -265,25 +398,22 @@
           </div>
           <div class="step-body">
             <p>
-              GitHub Pages is a free hosting service built into GitHub. Once enabled,
-              it automatically publishes your repository as a live website at
-              <code>your-username.github.io</code> — no server setup required.
+              GitHub Pages is free hosting built into GitHub. Once enabled, every file you push
+              to your repository becomes a live web page at <code>your-username.github.io</code>.
+              No servers, no hosting fees, no configuration beyond this step.
             </p>
-            <ol>
-              <li>In your new repository, click the <strong>Settings</strong> tab (near the top)</li>
-              <li>In the left sidebar, scroll down and click <strong>Pages</strong></li>
-              <li>Under <strong>Branch</strong>, select <code>main</code> and click <strong>Save</strong></li>
-              <li>Wait about 60–90 seconds, then reload the Settings → Pages view</li>
-              <li>You'll see a banner: <em>"Your site is live at https://your-username.github.io"</em></li>
-            </ol>
-            <div class="callout mt-sm">
-              <div class="callout-label">💡 Note</div>
-              <p>
-                The site will show just your README for now — and it won't look like much.
-                That's fine. You've done something real: you have a live URL. Everything from
-                here is making that URL worth visiting.
-              </p>
+            <div class="ai-callout">
+              <strong>Do this through your AI chat.</strong> Tell it: "Help me enable GitHub Pages
+              on my repository." It can walk you through the settings or guide you through doing it
+              directly from the terminal.
             </div>
+            <p class="mt-sm">If you prefer to do it manually:</p>
+            <ol>
+              <li>In your repository on GitHub, click the <strong>Settings</strong> tab</li>
+              <li>In the left sidebar, click <strong>Pages</strong></li>
+              <li>Under Branch, select <code>main</code> and click <strong>Save</strong></li>
+              <li>Wait 60 to 90 seconds and reload. You will see a live URL appear.</li>
+            </ol>
           </div>
         </div>
 
@@ -293,51 +423,36 @@
             <div class="step-num" aria-hidden="true">6</div>
             <div class="step-meta">
               <h3>Your First Commit</h3>
-              <span class="step-time">⏱ 20–30 minutes</span>
+              <span class="step-time">⏱ 20 to 30 minutes</span>
             </div>
           </div>
           <div class="step-body">
             <p>
-              A <strong>commit</strong> is a snapshot of your files at a moment in time. Every time
-              you "push" changes to GitHub, you're creating a commit with a message describing what
-              you changed. It's like a save point with a note attached.
+              A commit is a snapshot of your files at a moment in time, with a message describing
+              what changed. Every time you push work to GitHub, you create one. Your commit history
+              is part of your portfolio.
             </p>
-            <p><strong>Clone your repository to your laptop:</strong></p>
-            <p>
-              In VS Code, open the terminal (<code>Cmd + `</code> on Mac, <code>Ctrl + `</code> on Windows),
-              then run:
-            </p>
-            <pre><code><span class="code-comment"># Replace YOUR-USERNAME with your actual GitHub username</span>
+            <div class="ai-callout">
+              <strong>Do this through your AI chat.</strong> Tell it: "Help me clone my repository
+              to my laptop, create an index.html file, and push my first commit." It will provide
+              the exact commands for your operating system and explain each one.
+            </div>
+            <p class="mt-sm">The basic flow, for reference:</p>
+            <pre><code><span class="code-comment"># Clone the repo to your laptop</span>
 git clone https://github.com/YOUR-USERNAME/YOUR-USERNAME.github.io
-cd YOUR-USERNAME.github.io</code></pre>
-            <p><strong>Create your first file:</strong></p>
-            <p>
-              In VS Code, create a file called <code>index.html</code> in that folder
-              and add some content. Even a simple placeholder works:
-            </p>
-            <pre><code><span class="code-key">&lt;!DOCTYPE html&gt;</span>
-<span class="code-key">&lt;html&gt;</span>
-<span class="code-key">&lt;head&gt;</span>
-  <span class="code-key">&lt;title&gt;</span><span class="code-val">My Portfolio</span><span class="code-key">&lt;/title&gt;</span>
-<span class="code-key">&lt;/head&gt;</span>
-<span class="code-key">&lt;body&gt;</span>
-  <span class="code-key">&lt;h1&gt;</span><span class="code-val">Coming soon.</span><span class="code-key">&lt;/h1&gt;</span>
-<span class="code-key">&lt;/body&gt;</span>
-<span class="code-key">&lt;/html&gt;</span></code></pre>
-            <p><strong>Push it to GitHub:</strong></p>
-            <pre><code>git add index.html
-git commit -m "First commit — hello world"
+cd YOUR-USERNAME.github.io
+
+<span class="code-comment"># Create a file, commit, and push</span>
+git add index.html
+git commit -m "First commit"
 git push</code></pre>
             <div class="callout callout--story mt-sm">
               <div class="callout-label">🎯 What just happened</div>
               <p>
-                You created a file, staged it (<code>git add</code>), labeled the snapshot
+                You staged the file (<code>git add</code>), labeled the snapshot
                 (<code>git commit</code>), and sent it to GitHub (<code>git push</code>).
-                Within 60–90 seconds, your live URL will show your new file. Refresh
-                <code>https://your-username.github.io</code> and see for yourself.
-              </p>
-              <p>
-                This is the workflow you'll repeat hundreds of times this summer. It gets fast.
+                Within 60 to 90 seconds, your live URL reflects the change.
+                This is the workflow you will repeat throughout the summer. It gets fast.
               </p>
             </div>
           </div>
@@ -347,13 +462,76 @@ git push</code></pre>
     </div>
   </section>
 
+  <!-- ── Step 7: Hello World Practice ─────────────────────── -->
+  <section class="section" id="practice">
+    <div class="container-narrow">
+      <div class="section-header">
+        <span class="section-label">Before You Build the Real Thing</span>
+        <h2>Practice Build: Hello World</h2>
+        <p>
+          Prove to yourself that the entire workflow works before you invest time in your
+          actual portfolio. This exercise takes 20 to 30 minutes and teaches you more than
+          any explanation could.
+        </p>
+      </div>
+
+      <div class="hello-world-box">
+        <h3>The exercise</h3>
+        <p>
+          Tell your AI assistant to help you create a simple HTML page that says "Hello World"
+          in your personal colors, and publish it live at your GitHub Pages URL.
+        </p>
+        <p>Use this prompt in your AI chat:</p>
+        <div class="prompt-box">
+          <button class="copy-btn" id="copy-btn-2" onclick="copyPrompt2()" aria-label="Copy practice prompt">Copy</button>
+          <pre id="practice-prompt">Help me build a simple "Hello World" HTML page and publish it at my GitHub Pages URL.
+
+The page should:
+- Say "Hello World" as a big heading
+- Use my two favorite colors as the background and text color
+- Have my name somewhere on the page
+- Be clean and simple
+
+My favorite colors are [YOUR COLORS HERE — for example: navy blue and orange].
+My GitHub Pages URL is [YOUR-USERNAME].github.io.
+
+Walk me through creating the file, writing the HTML, committing it, and pushing it live.
+Explain what each step does as we go.</pre>
+        </div>
+      </div>
+
+      <div class="callout callout--story mt-md">
+        <div class="callout-label">🎯 Why this matters</div>
+        <p>
+          When you see your own words in your own colors at your own URL, the workflow becomes
+          real in a way that reading about it never does. You will also have proof that your
+          tools are connected correctly before you invest serious time in your portfolio.
+        </p>
+        <p>
+          The workflow you just practiced, create a file, write content, commit, push, and see
+          it live, is the exact same workflow you will use to build your entire portfolio.
+          You have now done it. Everything from here is doing it again with better content.
+        </p>
+      </div>
+
+      <p class="mt-md">
+        Once your Hello World page is live, head to the
+        <a href="process.html">Process page</a> to start thinking about what your real portfolio will contain.
+      </p>
+      <div class="hero-cta mt-md">
+        <a href="process.html" class="btn btn--primary">Read the Process Guide →</a>
+        <a href="index.html#categories" class="btn btn--secondary">Review the Categories</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Troubleshooting ────────────────────────────────────── -->
   <section class="section section--cream" id="troubleshooting">
     <div class="container-narrow">
       <div class="section-header">
         <span class="section-label">When Things Break</span>
         <h2>Troubleshooting</h2>
-        <p>Things will go wrong. Here's how to handle it.</p>
+        <p>Things will go wrong. Here is how to handle it.</p>
       </div>
 
       <div class="faq-list">
@@ -365,17 +543,10 @@ git push</code></pre>
           </summary>
           <div class="faq-a">
             <p>
-              GitHub deprecated password authentication over HTTPS. You need to set up a
-              <strong>Personal Access Token (PAT)</strong> or use SSH instead.
-            </p>
-            <p>
-              Easiest fix: go to GitHub → Settings → Developer settings → Personal access tokens →
-              Generate new token. Give it repo permissions. Use this token as your "password"
-              when git asks. Store it somewhere safe — you can't see it again after creation.
-            </p>
-            <p>
-              Even easier: ask Claude Code to walk you through setting up SSH authentication.
-              Once done, you'll never deal with this again.
+              GitHub no longer accepts passwords over HTTPS. You need a Personal Access Token
+              or SSH authentication. Tell your AI assistant: "git push is asking for a password
+              and failing. Help me fix this." It will walk you through the right solution for
+              your operating system.
             </p>
           </div>
         </details>
@@ -388,10 +559,10 @@ git push</code></pre>
           <div class="faq-a">
             <p>Two likely causes:</p>
             <ul>
-              <li><strong>Pages isn't enabled yet</strong> — double-check Settings → Pages and that the branch is set to <code>main</code></li>
-              <li><strong>No index.html file</strong> — GitHub Pages looks for a file named exactly <code>index.html</code> in the root of your repo. If it doesn't exist, you get a 404.</li>
+              <li><strong>Pages is not enabled.</strong> Check Settings → Pages and confirm the branch is set to <code>main</code>.</li>
+              <li><strong>No index.html file.</strong> GitHub Pages looks for a file named exactly <code>index.html</code> in your repo root. If it does not exist, you get a 404.</li>
             </ul>
-            <p>Wait 2–3 minutes after any change and force-refresh your browser (<code>Cmd + Shift + R</code> on Mac).</p>
+            <p>Wait 2 to 3 minutes after any change, then force refresh your browser with <code>Cmd + Shift + R</code> on Mac or <code>Ctrl + Shift + R</code> on Windows.</p>
           </div>
         </details>
 
@@ -401,72 +572,31 @@ git push</code></pre>
             <span class="faq-icon" aria-hidden="true">+</span>
           </summary>
           <div class="faq-a">
-            <p>Git doesn't know who you are yet. Tell it:</p>
+            <p>Git does not know who you are yet. Run these two commands in your terminal:</p>
             <pre><code>git config --global user.email "you@example.com"
 git config --global user.name "Your Name"</code></pre>
-            <p>Use the same email address as your GitHub account. Then run your commit again.</p>
+            <p>Use the same email address as your GitHub account, then run your commit again.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary class="faq-q">
-            <span>I got an error I don't understand</span>
+            <span>I got an error I do not understand</span>
             <span class="faq-icon" aria-hidden="true">+</span>
           </summary>
           <div class="faq-a">
-            <p>
-              Copy the exact error message. Then:
-            </p>
+            <p>Copy the exact error message. Then:</p>
             <ol>
-              <li><strong>Ask Claude Code</strong> — paste the error and say "I was doing X and got this error." It will explain what went wrong and how to fix it.</li>
-              <li><strong>Search the exact error text on Google</strong> — you are almost certainly not the first person to hit this. GitHub Docs and Stack Overflow are excellent resources.</li>
-              <li><strong>GitHub Docs</strong> at <a href="https://docs.github.com" target="_blank" rel="noopener">docs.github.com</a> — comprehensive, well-written, and has a good search.</li>
+              <li><strong>Paste it to your AI assistant.</strong> Say "I was doing X and got this error" and include the full error text. It will diagnose and fix it.</li>
+              <li><strong>Search the exact error text.</strong> You are almost certainly not the first person to hit this. Stack Overflow and GitHub Docs are excellent resources.</li>
             </ol>
             <p>
-              The process of diagnosing and fixing an error you've never seen before is exactly
-              what employers pay people to do. You're doing real work right now.
+              Diagnosing an error you have never seen before is exactly what employers pay people to do.
+              You are doing real work right now.
             </p>
           </div>
         </details>
 
-        <details class="faq-item">
-          <summary class="faq-q">
-            <span>I have no idea if I'm doing this right</span>
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </summary>
-          <div class="faq-a">
-            <p>
-              Here's the benchmark: <strong>does your URL load a page?</strong> If yes, you're doing it right.
-              Everything else is refinement.
-            </p>
-            <p>
-              The steps in this guide are the exact steps used by professionals. If you've followed them
-              and your site is live, you've done something real — not a simulation of something real.
-            </p>
-          </div>
-        </details>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── You Did It ─────────────────────────────────────────── -->
-  <section class="section" id="you-did-it">
-    <div class="container-narrow">
-      <span class="section-label">What's Next</span>
-      <h2>You have a live site. Now what?</h2>
-      <p class="mt-sm">
-        The setup is done. You have a GitHub account, a public repository, a live URL, and at least
-        one commit. That's the foundation. Everything from here is what goes on top of it.
-      </p>
-      <p>
-        Head to the <a href="process.html">Process page</a> for guidance on deciding what to build,
-        how to think about your portfolio, and how to handle common situations like internship
-        confidentiality, passion projects, and what "polished" actually means.
-      </p>
-      <div class="hero-cta mt-md">
-        <a href="process.html" class="btn btn--primary">Read the Process Guide →</a>
-        <a href="index.html#categories" class="btn btn--secondary">Review the Categories</a>
       </div>
     </div>
   </section>
@@ -478,8 +608,8 @@ git config --global user.name "Your Name"</code></pre>
   <div class="container footer-inner">
     <div class="footer-brand">
       <strong>Gonzaga Portfolio Competition</strong><br>
-      School of Business Administration &nbsp;·&nbsp; MIS Discipline<br>
-      Facilitated by John Spencer, Associate Professor of MIS
+      School of Business Administration &nbsp;·&nbsp; Information Systems Department<br>
+      Facilitated by John Spencer, Associate Professor of Information Systems
     </div>
     <nav aria-label="Footer navigation">
       <ul class="footer-links">
@@ -506,6 +636,27 @@ git config --global user.name "Your Name"</code></pre>
     toggle.addEventListener('click', () => {
       const open = links.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open);
+    });
+  }
+
+  // Copy prompt button
+  function copyPrompt() {
+    const text = document.getElementById('bootstrap-prompt').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyPrompt2() {
+    const text = document.getElementById('practice-prompt').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn-2');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
 </script>
