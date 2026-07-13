@@ -1,0 +1,7 @@
+# Cloudflare / wrangler local state & build cache
+.wrangler/
+node_modules/
+
+# Local exports of submissions (contain student PII — never commit)
+submissions.json
+submissions*.csv

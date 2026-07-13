@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Your Portfolio — Gonzaga Portfolio Competition</title>
+  <meta name="description" content="Submit your portfolio to the Gonzaga Portfolio Competition. Deadline: August 24, 2026. One category per entry — submit again for each additional category.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .form-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    @media (min-width: 600px) { .form-card { padding: 2.5rem; } }
+
+    .field { margin-bottom: 1.5rem; }
+    .field > label {
+      display: block;
+      font-weight: 600;
+      color: var(--navy);
+      font-size: .95rem;
+      margin-bottom: .4rem;
+    }
+    .field .req { color: var(--red); }
+    .field .hint { display: block; font-weight: 400; color: var(--gray-600); font-size: .85rem; margin-top: .15rem; }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="url"],
+    .field textarea {
+      width: 100%;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--text);
+      background: var(--white);
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: .7rem .85rem;
+      transition: border-color var(--ease), box-shadow var(--ease);
+    }
+    .field textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(10,50,112,.12);
+    }
+
+    /* Category radio cards */
+    .radio-group { display: grid; grid-template-columns: 1fr; gap: .6rem; }
+    @media (min-width: 560px) { .radio-group { grid-template-columns: 1fr 1fr; } }
+    .radio-card { position: relative; }
+    .radio-card input {
+      position: absolute; opacity: 0; width: 0; height: 0;
+    }
+    .radio-card label {
+      display: block;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--r-md);
+      padding: .85rem 1rem;
+      cursor: pointer;
+      transition: border-color var(--ease), background var(--ease), box-shadow var(--ease);
+    }
+    .radio-card label .rc-title { font-weight: 700; color: var(--navy); display: block; }
+    .radio-card label .rc-desc { font-size: .82rem; color: var(--gray-600); display: block; margin-top: .1rem; }
+    .radio-card label:hover { border-color: var(--navy-mid); }
+    .radio-card input:checked + label {
+      border-color: var(--red);
+      background: rgba(220,30,51,.04);
+      box-shadow: 0 0 0 2px rgba(220,30,51,.15);
+    }
+    .radio-card input:focus-visible + label { box-shadow: 0 0 0 3px rgba(10,50,112,.18); }
+
+    .form-error {
+      display: none;
+      background: rgba(220,30,51,.07);
+      border: 1.5px solid rgba(220,30,51,.3);
+      color: var(--red-dk);
+      border-radius: var(--r-md);
+      padding: .75rem 1rem;
+      font-size: .9rem;
+      margin-bottom: 1.25rem;
+    }
+    .form-error.show { display: block; }
+
+    .submit-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.75rem; }
+    .btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+    /* Success + closed panels */
+    .result-panel { display: none; }
+    .result-panel.show { display: block; }
+    .success-box {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--r-lg);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .success-box h2 { color: var(--white); }
+    .success-box p { color: rgba(255,255,255,.78); max-width: 52ch; margin: .75rem auto 0; }
+    .success-box .btn { margin-top: 1.5rem; }
+
+    .deadline-chip {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(220,30,51,.08);
+      color: var(--red-dk);
+      border: 1px solid rgba(220,30,51,.2);
+      border-radius: 999px;
+      font-size: .82rem; font-weight: 600;
+      padding: .35rem .85rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────── -->
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Gonzaga Portfolio Competition home">
+      <div class="nav-logo-mark" aria-hidden="true"><span>GPC</span></div>
+      <div class="nav-logo-text">
+        Portfolio Competition
+        <small>Gonzaga · Information Systems</small>
+      </div>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html"   class="nav-link">Overview</a></li>
+      <li><a href="setup.html"   class="nav-link">Setup</a></li>
+      <li><a href="process.html" class="nav-link">Process</a></li>
+      <li><a href="submit.html"  class="nav-link" aria-current="page">Submit</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- ── Page Hero ─────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Submit</span>
+      <h1>Submit your portfolio.</h1>
+      <p class="page-hero-sub">
+        One entry per category. Entering more than one category? Submit again for each — it takes a minute.
+      </p>
+      <span class="deadline-chip">⏱ Deadline: August 24, 2026 · 11:59pm Pacific</span>
+    </div>
+  </section>
+
+  <!-- ── Form ──────────────────────────────────────────────── -->
+  <section class="section" id="submit">
+    <div class="container-narrow">
+
+      <!-- Closed notice (shown by JS after the deadline) -->
+      <div class="result-panel" id="closed-panel">
+        <div class="callout callout--story">
+          <div class="callout-label">Submissions are closed</div>
+          <p>
+            The deadline for the Gonzaga Portfolio Competition has passed. Thank you to everyone who
+            submitted. Keep your portfolio live — it is yours to keep, and it is working for you every
+            day it is on the internet.
+          </p>
+        </div>
+      </div>
+
+      <!-- Success (shown by JS after a successful submit) -->
+      <div class="result-panel" id="success-panel">
+        <div class="success-box">
+          <h2>You're in. ✓</h2>
+          <p id="success-msg">
+            Your entry has been recorded. You'll be contacted at the email you provided if there's
+            anything else we need.
+          </p>
+          <p>Entering another category? You can submit again.</p>
+          <a href="submit.html" class="btn btn--white">Submit another entry →</a>
+        </div>
+      </div>
+
+      <!-- The form -->
+      <div id="form-wrap">
+        <div class="form-card">
+          <div class="form-error" id="form-error" role="alert"></div>
+
+          <form id="submit-form" novalidate>
+            <div class="field">
+              <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="f-name" name="name" autocomplete="name" required maxlength="200">
+            </div>
+
+            <div class="field">
+              <label for="f-email">Email address <span class="req" aria-hidden="true">*</span>
+                <span class="hint">Where we'll reach you about your entry. Your Gonzaga email is perfect.</span>
+              </label>
+              <input type="email" id="f-email" name="email" autocomplete="email" required maxlength="300">
+            </div>
+
+            <div class="field">
+              <label for="f-url">Portfolio link <span class="req" aria-hidden="true">*</span>
+                <span class="hint">Your live URL, e.g. https://your-username.github.io</span>
+              </label>
+              <input type="url" id="f-url" name="portfolio_url" placeholder="https://" required maxlength="500">
+            </div>
+
+            <div class="field">
+              <label id="cat-label">Category for this entry <span class="req" aria-hidden="true">*</span>
+                <span class="hint">Pick the one this portfolio is competing in. Submit again for others.</span>
+              </label>
+              <div class="radio-group" role="radiogroup" aria-labelledby="cat-label">
+                <div class="radio-card">
+                  <input type="radio" id="cat-business" name="category" value="business">
+                  <label for="cat-business">
+                    <span class="rc-title">Business</span>
+                    <span class="rc-desc">Internship or client work, professional deliverables.</span>
+                  </label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" id="cat-personal" name="category" value="personal">
+                  <label for="cat-personal">
+                    <span class="rc-title">Personal</span>
+                    <span class="rc-desc">Passion projects; who you are beyond a résumé.</span>
+                  </label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" id="cat-design" name="category" value="design">
+                  <label for="cat-design">
+                    <span class="rc-title">Design</span>
+                    <span class="rc-desc">Visual craft — typography, layout, experience.</span>
+                  </label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" id="cat-problem" name="category" value="problem-solving">
+                  <label for="cat-problem">
+                    <span class="rc-title">Problem Solving</span>
+                    <span class="rc-desc">It does something — a project that actually works.</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-reflection">What you learned and how you grew <span class="req" aria-hidden="true">*</span>
+                <span class="hint">A few honest sentences. What was hard, what you figured out, what you'd do next.</span>
+              </label>
+              <textarea id="f-reflection" name="reflection" required maxlength="5000"></textarea>
+            </div>
+
+            <!-- Turnstile mounts here only when a site key is configured (see JS + DEPLOY.md). -->
+            <div id="turnstile-slot"></div>
+
+            <div class="submit-row">
+              <button type="submit" class="btn btn--primary" id="submit-btn">Submit entry →</button>
+              <span class="hint" style="margin:0;">You can submit as many entries as you have categories.</span>
+            </div>
+          </form>
+        </div>
+
+        <p class="mt-md" style="font-size:.9rem; color:var(--gray-600);">
+          Not ready yet? Review the <a href="index.html#categories">four categories</a> or read the
+          <a href="process.html">Process guide</a> first.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>Gonzaga Portfolio Competition</strong><br>
+      School of Business Administration &nbsp;·&nbsp; Information Systems Department<br>
+      Facilitated by John Spencer, Associate Professor of Information Systems
+    </div>
+    <nav aria-label="Footer navigation">
+      <ul class="footer-links">
+        <li><a href="index.html">Overview</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <li><a href="setup.html">Setup</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <li><a href="process.html">Process</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <li><a href="submit.html">Submit</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <!-- TODO: Add GitHub repo link once available -->
+        <li><a href="#" aria-label="GitHub repository (link coming soon)">GitHub</a></li>
+        <li class="footer-divider" aria-hidden="true">·</li>
+        <!-- TODO: Replace with actual contact email -->
+        <li><a href="mailto:TBD@gonzaga.edu">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // ── Config ──────────────────────────────────────────────────
+  // Deadline must match DEADLINE_ISO in wrangler.toml. The server is the source of truth;
+  // this only closes the form in the browser so students see a clear message.
+  var DEADLINE = new Date('2026-08-24T23:59:59-07:00');
+  // Paste your Cloudflare Turnstile SITE key here to turn on bot protection (see DEPLOY.md).
+  // Leave empty to launch without it; the server also skips the check until TURNSTILE_SECRET is set.
+  var TURNSTILE_SITE_KEY = '';
+
+  // ── Mobile nav toggle ───────────────────────────────────────
+  var toggle = document.querySelector('.nav-toggle');
+  var links  = document.getElementById('nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+  }
+
+  var form      = document.getElementById('submit-form');
+  var formWrap  = document.getElementById('form-wrap');
+  var errBox    = document.getElementById('form-error');
+  var btn       = document.getElementById('submit-btn');
+
+  function showError(msg) {
+    errBox.textContent = msg;
+    errBox.classList.add('show');
+    errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function clearError() { errBox.classList.remove('show'); errBox.textContent = ''; }
+
+  // ── Deadline: close the form client-side once it's passed ────
+  if (Date.now() > DEADLINE.getTime()) {
+    formWrap.style.display = 'none';
+    document.getElementById('closed-panel').classList.add('show');
+  }
+
+  // ── Optional Turnstile ──────────────────────────────────────
+  var turnstileReady = false;
+  if (TURNSTILE_SITE_KEY) {
+    var slot = document.getElementById('turnstile-slot');
+    var widget = document.createElement('div');
+    widget.className = 'cf-turnstile';
+    widget.style.marginBottom = '1rem';
+    widget.setAttribute('data-sitekey', TURNSTILE_SITE_KEY);
+    slot.appendChild(widget);
+    var s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    s.async = true; s.defer = true;
+    document.head.appendChild(s);
+    turnstileReady = true;
+  }
+
+  // ── Submit ──────────────────────────────────────────────────
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearError();
+
+      var data = {
+        name:          form.name.value.trim(),
+        email:         form.email.value.trim(),
+        portfolio_url: form.portfolio_url.value.trim(),
+        category:      (form.querySelector('input[name="category"]:checked') || {}).value || '',
+        reflection:    form.reflection.value.trim()
+      };
+
+      if (!data.name)                                return showError('Please enter your name.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return showError('Please enter a valid email address.');
+      if (!/^https?:\/\/.+\..+/i.test(data.portfolio_url)) return showError('Please enter your live portfolio URL (starting with https://).');
+      if (!data.category)                            return showError('Please choose a category for this entry.');
+      if (data.reflection.length < 20)               return showError('Please share a little about what you learned and how you grew.');
+
+      if (turnstileReady) {
+        var t = form.querySelector('[name="cf-turnstile-response"]');
+        if (!t || !t.value) return showError('Please complete the "I’m human" check, then submit again.');
+        data['cf-turnstile-response'] = t.value;
+      }
+
+      btn.disabled = true;
+      var original = btn.textContent;
+      btn.textContent = 'Submitting…';
+
+      fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (r) { return r.json().catch(function () { return { ok: false, error: 'Unexpected server response.' }; }); })
+        .then(function (res) {
+          if (res && res.ok) {
+            formWrap.style.display = 'none';
+            document.getElementById('success-panel').classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            showError((res && res.error) || 'Something went wrong. Please try again.');
+            btn.disabled = false; btn.textContent = original;
+          }
+        })
+        .catch(function () {
+          showError('Could not reach the server. Check your connection and try again.');
+          btn.disabled = false; btn.textContent = original;
+        });
+    });
+  }
+</script>
+</body>
+</html>
