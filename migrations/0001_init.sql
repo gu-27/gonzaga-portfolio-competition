@@ -19,9 +19,8 @@ CREATE TABLE IF NOT EXISTS submissions (
   reflection     TEXT NOT NULL,                          -- "what you learned and how you grew"
   review_status  TEXT NOT NULL DEFAULT 'unreviewed',     -- unreviewed | shortlisted | winner | disqualified
   reviewer_notes TEXT NOT NULL DEFAULT '',               -- private; set by reviewers, never by students
-  ip             TEXT,                                   -- CF-Connecting-IP (abuse triage)
-  country        TEXT,                                   -- request.cf.country
-  user_agent     TEXT
+  reviewed_by    TEXT,                                   -- reviewer identity (Access email); null until reviewed
+  reviewed_at    TEXT                                    -- ISO 8601 when reviewed; null until reviewed
 );
 
 -- Dedup + abuse bound: at most one row per (email, category). Powers the UPSERT in functions/api/submit.js.

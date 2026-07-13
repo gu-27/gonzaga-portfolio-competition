@@ -58,33 +58,31 @@ export async function onRequestPost({ request, env }) {
     if (!isEmail(email)) return error('Please enter a valid email address.');
     let parsedUrl;
     try { parsedUrl = new URL(portfolio_url); } catch { parsedUrl = null; }
-    if (!parsedUrl || (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:')) {
+    if (!parsedUrl) {
       return error('Please enter a valid portfolio URL (starting with https://).');
+    }
+    if (parsedUrl.protocol !== 'https:') {
+      return error("Portfolio URL must use https. If your site is currently http-only, you'll need to enable https before submitting.");
     }
     if (!CATEGORIES.has(category)) return error('Please choose a category.');
     if (reflection.length < 20) return error('Please share a little about what you learned and how you grew.');
 
     email = email.toLowerCase();                 // normalize so the (email, category) dedup key is reliable
     const now = new Date().toISOString();
-    const ip = request.headers.get('CF-Connecting-IP') || '';
-    const country = (request.cf && request.cf.country) || '';
-    const user_agent = clean(request.headers.get('user-agent'), 400);
 
     // UPSERT on (email, category). On re-submit of the same category we update the entry but PRESERVE
-    // created_at and any reviewer state (review_status / reviewer_notes are intentionally not touched).
+    // created_at and all reviewer state (review_status / reviewer_notes / reviewed_by / reviewed_at are
+    // intentionally not touched). Minimal-PII: we persist only what the entry itself needs.
     const res = await env.DB.prepare(
       `INSERT INTO submissions
-         (created_at, updated_at, name, email, portfolio_url, category, reflection, ip, country, user_agent)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         (created_at, updated_at, name, email, portfolio_url, category, reflection)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(email, category) DO UPDATE SET
          updated_at    = excluded.updated_at,
          name          = excluded.name,
          portfolio_url = excluded.portfolio_url,
-         reflection    = excluded.reflection,
-         ip            = excluded.ip,
-         country       = excluded.country,
-         user_agent    = excluded.user_agent`
-    ).bind(now, now, name, email, portfolio_url, category, reflection, ip, country, user_agent).run();
+         reflection    = excluded.reflection`
+    ).bind(now, now, name, email, portfolio_url, category, reflection).run();
 
     return json({ ok: true, id: res.meta?.last_row_id ?? null });
   } catch (e) {

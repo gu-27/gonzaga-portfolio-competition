@@ -189,6 +189,14 @@
 
       <!-- The form -->
       <div id="form-wrap">
+        <div class="callout" style="margin-bottom:1.25rem;">
+          <div class="callout-label">💡 How submissions work</div>
+          <p>
+            You can submit up to four entries — one per category. Submitting again in the same category
+            will <strong>replace</strong> your previous entry for that category. Your reviewer notes and
+            submission date are preserved.
+          </p>
+        </div>
         <div class="form-card">
           <div class="form-error" id="form-error" role="alert"></div>
 
@@ -207,7 +215,7 @@
 
             <div class="field">
               <label for="f-url">Portfolio link <span class="req" aria-hidden="true">*</span>
-                <span class="hint">Your live URL, e.g. https://your-username.github.io</span>
+                <span class="hint">Your portfolio URL must start with https:// — e.g. https://your-username.github.io</span>
               </label>
               <input type="url" id="f-url" name="portfolio_url" placeholder="https://" required maxlength="500">
             </div>
@@ -374,7 +382,7 @@
 
       if (!data.name)                                return showError('Please enter your name.');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return showError('Please enter a valid email address.');
-      if (!/^https?:\/\/.+\..+/i.test(data.portfolio_url)) return showError('Please enter your live portfolio URL (starting with https://).');
+      if (!/^https:\/\/.+\..+/i.test(data.portfolio_url)) return showError("Portfolio URL must use https. If your site is currently http-only, you'll need to enable https before submitting.");
       if (!data.category)                            return showError('Please choose a category for this entry.');
       if (data.reflection.length < 20)               return showError('Please share a little about what you learned and how you grew.');
 

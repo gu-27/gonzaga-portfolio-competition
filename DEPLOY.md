@@ -66,6 +66,34 @@ secret `1x0000000000000000000000000000000AA`.
 
 ---
 
+## Rate Limiting (Cloudflare WAF)
+
+Turnstile stops bots; these WAF rules bound raw request volume per IP as defense-in-depth.
+They are Cloudflare zone config (not code), documented here so they can be re-created exactly
+if the project ever migrates.
+
+**Where to click:** Cloudflare dashboard → pick the account → open the site's **zone/domain** →
+**Security** → **WAF** → **Rate limiting rules** tab → **Create rule**. (On some plans it appears
+as **Security** → **Rate limiting rules** directly, without the WAF sub-tab.)
+
+**Rule 1 — primary (challenge bursts)**
+- Name: `gpc-submit-burst`
+- When incoming requests match: field **URI Path** · operator **equals** · value `/api/submit`
+  (optionally AND field **Request Method** equals `POST`)
+- Rate: **5** requests per **1 minute**, "with the same" characteristic **IP**
+- Then take action: **Managed Challenge**
+
+**Rule 2 — backstop (block sustained abuse)**
+- Name: `gpc-submit-hourly`
+- When incoming requests match: field **URI Path** · operator **equals** · value `/api/submit`
+  (optionally AND field **Request Method** equals `POST`)
+- Rate: **30** requests per **1 hour**, "with the same" characteristic **IP**
+- Then take action: **Block**
+
+If the project migrates to a new zone, re-create both rules with these exact values.
+
+---
+
 ## Reviewing / judging submissions
 
 Read everything (newest first):
