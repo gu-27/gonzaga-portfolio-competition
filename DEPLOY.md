@@ -47,16 +47,22 @@ wrangler d1 execute gpc_submissions --local --command="SELECT id, name, category
 
 ---
 
-## Optional: turn on bot protection (Turnstile)
+## Required before launch: Turnstile bot protection
 
-Off by default so you can launch immediately. To enable:
-1. Cloudflare dashboard → **Turnstile** → add a widget for your site's domain.
-2. Put the **site key** into `submit.html` (`var TURNSTILE_SITE_KEY = '...'`).
+Turnstile is **ON (required)** — the form will not accept submissions until you configure it.
+The endpoint fails closed: no secret → `503`, missing/invalid token → `403`.
+
+1. Cloudflare dashboard → **Turnstile** → add a widget for your site's domain. You get a
+   **site key** (public) and a **secret key** (private).
+2. Paste the **site key** into `submit.html`, replacing `REPLACE_WITH_TURNSTILE_SITE_KEY`
+   (`var TURNSTILE_SITE_KEY = '...'`).
 3. Set the **secret key** as a Pages secret:
    ```bash
    wrangler pages secret put TURNSTILE_SECRET
    ```
-Once the secret is set, the endpoint **rejects** submissions without a valid token.
+
+For local testing, Cloudflare's always-pass test keys work: site `1x00000000000000000000AA`,
+secret `1x0000000000000000000000000000000AA`.
 
 ---
 

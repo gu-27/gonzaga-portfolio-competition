@@ -6,8 +6,8 @@
 // category), bounding table-flooding abuse. Stores student PII (name + email) — review it only through
 // the (Access-gated) admin path in DEPLOY.md.
 //
-// Bot protection is OPTIONAL here and controlled by config (see the Turnstile block below). When
-// TURNSTILE_SECRET is set, a missing/invalid token is rejected.
+// Bot protection is REQUIRED: the endpoint fails closed until TURNSTILE_SECRET is set (503) and a
+// valid Turnstile token accompanies each submission (else 403). See DEPLOY.md to configure the keys.
 import { json, error, clean, isEmail } from './_lib/respond.js';
 import { verifyTurnstile } from './_lib/turnstile.js';
 
@@ -39,11 +39,12 @@ export async function onRequestPost({ request, env }) {
       : Object.fromEntries((await request.formData()).entries());
     const get = (k) => body[k];
 
-    // ── Optional bot gate — enforced only when TURNSTILE_SECRET is configured (fails closed then). ──
-    if (env.TURNSTILE_SECRET) {
-      const token = get('cf-turnstile-response') || get('turnstileToken');
-      const ip = request.headers.get('CF-Connecting-IP') || '';
-      if (!(await verifyTurnstile(env, token, ip))) return error('Bot verification failed. Please try again.', 403);
+    // ── Bot gate (REQUIRED). Fails closed: no secret configured → 503; missing/invalid token → 403. ──
+    if (!env.TURNSTILE_SECRET) return error('Submissions are temporarily unavailable.', 503);
+    const turnstileToken = get('cf-turnstile-response') || get('turnstileToken');
+    const turnstileIp = request.headers.get('CF-Connecting-IP') || '';
+    if (!(await verifyTurnstile(env, turnstileToken, turnstileIp))) {
+      return error('Please complete the bot check, then submit again.', 403);
     }
 
     // ── Validate every field SERVER-SIDE (the client checks are a courtesy only). ──

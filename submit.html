@@ -309,9 +309,10 @@
   // Deadline must match DEADLINE_ISO in wrangler.toml. The server is the source of truth;
   // this only closes the form in the browser so students see a clear message.
   var DEADLINE = new Date('2026-08-24T23:59:59-07:00');
-  // Paste your Cloudflare Turnstile SITE key here to turn on bot protection (see DEPLOY.md).
-  // Leave empty to launch without it; the server also skips the check until TURNSTILE_SECRET is set.
-  var TURNSTILE_SITE_KEY = '';
+  // Turnstile is REQUIRED. Replace the placeholder below with your Cloudflare Turnstile SITE key,
+  // and set TURNSTILE_SECRET on the server (see DEPLOY.md). Until a real key is in, the form will
+  // not submit — that's the intended fail-closed behavior.
+  var TURNSTILE_SITE_KEY = 'REPLACE_WITH_TURNSTILE_SITE_KEY';
 
   // ── Mobile nav toggle ───────────────────────────────────────
   var toggle = document.querySelector('.nav-toggle');
