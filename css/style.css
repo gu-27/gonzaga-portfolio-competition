@@ -284,7 +284,7 @@ p + p { margin-top: .85em; }
   gap: 1rem;
 }
 @media (min-width: 540px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px) { .categories-grid { grid-template-columns: repeat(4, 1fr); } }
 
 .category-card {
   background: var(--white);
@@ -310,11 +310,6 @@ p + p { margin-top: .85em; }
   transition: opacity var(--ease);
 }
 .category-card:hover::before { opacity: 1; }
-.category-card--placeholder {
-  border-style: dashed;
-  border-color: var(--gray-300);
-  background: var(--gray-50);
-}
 .card-num {
   font-size: .72rem;
   font-weight: 700;

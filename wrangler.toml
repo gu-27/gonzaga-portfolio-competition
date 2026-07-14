@@ -1,0 +1,17 @@
+name = "gonzaga-portfolio-competition"
+pages_build_output_dir = "."
+compatibility_date = "2026-01-01"
+
+# ── Non-secret config (safe to commit). Secrets go via `wrangler pages secret put`. ──
+[vars]
+SUBMISSIONS_OPEN = "true"                       # flip to "false" to hard-close submissions early
+DEADLINE_ISO     = "2026-08-24T23:59:59-07:00"  # Aug 24, 2026 · 11:59pm Pacific — server rejects after this
+# Turnstile is REQUIRED (bot gate). Set the secret with: wrangler pages secret put TURNSTILE_SECRET
+# and paste the public site key into submit.html. The form fails closed until BOTH are set — see DEPLOY.md.
+
+# ── D1: portfolio submissions (one row per entry) ──
+# Create it once with `wrangler d1 create gpc_submissions`, then paste the returned id below.
+[[d1_databases]]
+binding       = "DB"
+database_name = "gpc_submissions"
+database_id   = "PASTE_DATABASE_ID_FROM_wrangler_d1_create"
