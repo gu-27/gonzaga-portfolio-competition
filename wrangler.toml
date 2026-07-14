@@ -14,4 +14,4 @@ DEADLINE_ISO     = "2026-08-24T23:59:59-07:00"  # Aug 24, 2026 · 11:59pm Pacifi
 [[d1_databases]]
 binding       = "DB"
 database_name = "gpc_submissions"
-database_id   = "PASTE_DATABASE_ID_FROM_wrangler_d1_create"
+database_id   = "97745bad-ee9f-40eb-9630-0cc2b17c30b3"
