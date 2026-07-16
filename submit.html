@@ -207,7 +207,7 @@
 
             <div class="field">
               <label for="f-email">Email address <span class="req" aria-hidden="true">*</span>
-                <span class="hint">Where we'll reach you about your entry. Your Gonzaga email is perfect.</span>
+                <span class="hint">Use your Zagmail address (@zagmail.gonzaga.edu)</span>
               </label>
               <input type="email" id="f-email" name="email" autocomplete="email" required maxlength="300">
             </div>
@@ -381,6 +381,7 @@
 
       if (!data.name)                                return showError('Please enter your name.');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return showError('Please enter a valid email address.');
+      if (data.email.toLowerCase().slice(data.email.lastIndexOf('@') + 1) !== 'zagmail.gonzaga.edu') return showError('Please submit using your Zagmail address (@zagmail.gonzaga.edu).');
       if (!/^https:\/\/.+\..+/i.test(data.portfolio_url)) return showError("Portfolio URL must use https. If your site is currently http-only, you'll need to enable https before submitting.");
       if (!data.category)                            return showError('Please choose a category for this entry.');
       if (data.reflection.length < 20)               return showError('Please share a little about what you learned and how you grew.');

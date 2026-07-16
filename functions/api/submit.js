@@ -56,6 +56,13 @@ export async function onRequestPost({ request, env }) {
 
     if (!name) return error('Please enter your name.');
     if (!isEmail(email)) return error('Please enter a valid email address.');
+    email = email.toLowerCase();                 // normalize before the domain gate + as the dedup key
+    // Eligibility gate: EXACT domain match only. isEmail guarantees exactly one '@', so the substring
+    // after it is the full domain — an exact compare rejects evilzagmail.gonzaga.edu AND
+    // zagmail.gonzaga.edu.attacker.com (a naive endsWith() would let both through).
+    if (email.slice(email.lastIndexOf('@') + 1) !== 'zagmail.gonzaga.edu') {
+      return error('Please submit using your Zagmail address (@zagmail.gonzaga.edu).');
+    }
     let parsedUrl;
     try { parsedUrl = new URL(portfolio_url); } catch { parsedUrl = null; }
     if (!parsedUrl) {
@@ -67,7 +74,6 @@ export async function onRequestPost({ request, env }) {
     if (!CATEGORIES.has(category)) return error('Please choose a category.');
     if (reflection.length < 20) return error('Please share a little about what you learned and how you grew.');
 
-    email = email.toLowerCase();                 // normalize so the (email, category) dedup key is reliable
     const now = new Date().toISOString();
 
     // UPSERT on (email, category). On re-submit of the same category we update the entry but PRESERVE
