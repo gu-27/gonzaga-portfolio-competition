@@ -13,6 +13,7 @@
 // Keep this list in sync with the Cloudflare Access policy (see DEPLOY.md → Review UI).
 const REVIEWERS = new Set([
   'correia@gonzaga.edu',
+  'johnnycorreia27@gmail.com',
   'lebretj@gonzaga.edu',
   'reesee2@gonzaga.edu',
 ]);

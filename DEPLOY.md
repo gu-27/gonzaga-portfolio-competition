@@ -148,6 +148,7 @@ an entry. No per-reviewer isolation.
 
 **Reviewers (allowlist):**
 - `correia@gonzaga.edu`
+- `johnnycorreia27@gmail.com`
 - `lebretj@gonzaga.edu`
 - `reesee2@gonzaga.edu`
 
@@ -163,7 +164,7 @@ public until Access gates it — so configure Access before sharing the link.
    - `gu-summer-portfolio-26.pages.dev/review`
    - `gu-summer-portfolio-26.pages.dev/api/admin/*`
 3. **Login method** — one-time PIN (email) is simplest, or your IdP.
-4. **Policy** → action **Allow**, rule **Emails** = the three reviewer addresses above.
+4. **Policy** → action **Allow**, rule **Emails** = the four reviewer addresses above.
 5. Team domain is `frosty-voice-866c.cloudflareaccess.com` (hardcoded default in `identity.js`;
    override with the `ACCESS_TEAM_DOMAIN` Pages var if it ever changes).
 6. **Recommended:** copy the application's **Audience (AUD) tag** and set it as the Pages var
