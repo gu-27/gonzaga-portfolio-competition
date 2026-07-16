@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Reviewer Console — Gonzaga Portfolio Competition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: var(--cream); }
+    main { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+    .console-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap; margin: 1.25rem 0 1.75rem;
+    }
+    .console-bar .who { font-size: .85rem; color: var(--gray-600); }
+    .console-bar .who strong { color: var(--navy); }
+    .bar-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+    .summary { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .summary .chip {
+      background: var(--white); border: 1.5px solid var(--gray-100); border-radius: 999px;
+      padding: .3rem .8rem; font-size: .82rem; font-weight: 600; color: var(--navy);
+    }
+    .summary .chip span { color: var(--gray-600); font-weight: 500; }
+
+    .group { margin-bottom: 2.25rem; }
+    .group-head {
+      display: flex; align-items: baseline; gap: .6rem; margin-bottom: .9rem;
+      border-bottom: 2px solid var(--navy); padding-bottom: .4rem;
+    }
+    .group-head h2 { font-size: 1.15rem; color: var(--navy); }
+    .group-head .n { font-size: .82rem; color: var(--gray-600); font-weight: 600; }
+
+    .card {
+      background: var(--white); border: 1.5px solid var(--gray-100); border-radius: var(--r-lg);
+      padding: 1.25rem 1.35rem; margin-bottom: 1rem;
+    }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .card-top .who h3 { font-size: 1.02rem; color: var(--navy); margin-bottom: .15rem; }
+    .card-meta { font-size: .84rem; color: var(--gray-600); line-height: 1.7; }
+    .card-meta a { color: var(--red); }
+    .card-meta .lbl { color: var(--gray-800); font-weight: 600; }
+
+    .badge {
+      font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      padding: .28rem .6rem; border-radius: 999px; white-space: nowrap;
+    }
+    .badge.unreviewed   { background: var(--gray-50);  color: var(--gray-600); border: 1px solid var(--gray-300); }
+    .badge.shortlisted  { background: rgba(10,50,112,.10);  color: var(--navy);   border: 1px solid rgba(10,50,112,.35); }
+    .badge.winner       { background: rgba(45,164,78,.12);  color: #1a7f37;       border: 1px solid rgba(45,164,78,.45); }
+    .badge.disqualified { background: rgba(220,30,51,.09);  color: var(--red-dk); border: 1px solid rgba(220,30,51,.35); }
+
+    details.reflection { margin: .85rem 0; }
+    details.reflection summary {
+      cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--navy);
+      list-style: none; user-select: none;
+    }
+    details.reflection summary::-webkit-details-marker { display: none; }
+    details.reflection summary::before { content: '▸ '; }
+    details.reflection[open] summary::before { content: '▾ '; }
+    details.reflection .body {
+      margin-top: .5rem; padding: .8rem 1rem; background: var(--cream);
+      border-radius: var(--r-md); font-size: .9rem; line-height: 1.6; white-space: pre-wrap;
+    }
+
+    .review-row {
+      display: grid; grid-template-columns: 1fr; gap: .75rem; margin-top: 1rem;
+      padding-top: 1rem; border-top: 1px dashed var(--gray-300);
+    }
+    @media (min-width: 640px) { .review-row { grid-template-columns: 200px 1fr auto; align-items: start; } }
+    .review-row label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-600); display: block; margin-bottom: .3rem; }
+    .review-row select, .review-row textarea {
+      width: 100%; font-family: var(--font); font-size: .9rem; color: var(--text);
+      border: 1.5px solid var(--gray-300); border-radius: var(--r-md); padding: .5rem .6rem; background: var(--white);
+    }
+    .review-row textarea { min-height: 62px; resize: vertical; line-height: 1.5; }
+    .review-row select:focus, .review-row textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(10,50,112,.12); }
+    .save-col { display: flex; flex-direction: column; gap: .35rem; align-items: stretch; }
+    .save-col .btn { font-size: .82rem; padding: .55rem 1rem; }
+    .last-review { font-size: .78rem; color: var(--gray-600); margin-top: .6rem; }
+    .last-review strong { color: var(--navy); }
+    .save-note { font-size: .76rem; min-height: 1em; }
+    .save-note.ok { color: #1a7f37; }
+    .save-note.err { color: var(--red-dk); }
+
+    .state-msg { padding: 2rem; text-align: center; color: var(--gray-600); background: var(--white); border-radius: var(--r-lg); border: 1.5px solid var(--gray-100); }
+    .state-msg.err { color: var(--red-dk); border-color: rgba(220,30,51,.3); }
+    .btn--sm { font-size: .82rem; padding: .5rem .95rem; }
+  </style>
+</head>
+<body>
+
+<!-- ── Console header (site-styled, but NOT linked from the public nav) ─────────── -->
+<nav class="site-nav" aria-label="Reviewer console">
+  <div class="container nav-inner">
+    <span class="nav-logo" style="cursor:default;">
+      <span class="nav-logo-mark" aria-hidden="true"><span>GPC</span></span>
+      <span class="nav-logo-text">
+        Reviewer Console
+        <small>Gonzaga Portfolio Competition</small>
+      </span>
+    </span>
+  </div>
+</nav>
+
+<main>
+  <div class="console-bar">
+    <div class="who" id="who">Loading…</div>
+    <div class="bar-actions">
+      <button class="btn btn--secondary btn--sm" id="refresh-btn" type="button">Refresh</button>
+      <button class="btn btn--primary btn--sm" id="csv-btn" type="button">Export CSV</button>
+    </div>
+  </div>
+
+  <div class="summary" id="summary" hidden></div>
+  <div id="content"><div class="state-msg" id="loading">Loading submissions…</div></div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>Gonzaga Portfolio Competition — Reviewer Console</strong><br>
+      Internal review tool · access restricted to competition reviewers
+    </div>
+  </div>
+</footer>
+
+<script>
+  const CATEGORIES = [
+    { key: 'business',        label: 'Business' },
+    { key: 'personal',        label: 'Personal' },
+    { key: 'design',          label: 'Design' },
+    { key: 'problem-solving', label: 'Problem Solving' },
+  ];
+  const STATUSES = ['unreviewed', 'shortlisted', 'winner', 'disqualified'];
+
+  let DATA = [];   // all submissions, as loaded
+
+  const $ = (id) => document.getElementById(id);
+  function esc(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d)) return esc(iso);
+    return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  }
+  // Only render a portfolio link if it's a safe http(s) URL; otherwise show as text.
+  function safeUrl(u) { return /^https?:\/\//i.test(String(u || '')) ? u : null; }
+
+  async function load() {
+    $('content').innerHTML = '<div class="state-msg" id="loading">Loading submissions…</div>';
+    $('summary').hidden = true;
+    try {
+      const res = await fetch('/api/admin/list', { headers: { 'accept': 'application/json' } });
+      if (res.status === 403) {
+        $('who').textContent = '';
+        $('content').innerHTML = '<div class="state-msg err">Access denied. You must be signed in as an authorized reviewer (Cloudflare Access).</div>';
+        return;
+      }
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.ok) throw new Error((body && body.error) || ('HTTP ' + res.status));
+      DATA = body.submissions || [];
+      $('who').innerHTML = body.reviewer ? ('Signed in as <strong>' + esc(body.reviewer) + '</strong>') : '';
+      render();
+    } catch (e) {
+      $('content').innerHTML = '<div class="state-msg err">Failed to load submissions. ' + esc(e.message) + '</div>';
+    }
+  }
+
+  function render() {
+    // summary chips
+    const total = DATA.length;
+    const sumEl = $('summary');
+    sumEl.innerHTML = '<span class="chip">' + total + ' total <span>submissions</span></span>' +
+      CATEGORIES.map((c) => {
+        const n = DATA.filter((s) => s.category === c.key).length;
+        return '<span class="chip">' + esc(c.label) + ' <span>' + n + '</span></span>';
+      }).join('');
+    sumEl.hidden = false;
+
+    if (total === 0) {
+      $('content').innerHTML = '<div class="state-msg">No submissions yet.</div>';
+      return;
+    }
+
+    let html = '';
+    for (const cat of CATEGORIES) {
+      const rows = DATA.filter((s) => s.category === cat.key);
+      html += '<section class="group"><div class="group-head"><h2>' + esc(cat.label) +
+        '</h2><span class="n">' + rows.length + (rows.length === 1 ? ' entry' : ' entries') + '</span></div>';
+      if (rows.length === 0) {
+        html += '<div class="state-msg" style="text-align:left;padding:1rem;">No entries in this category.</div>';
+      } else {
+        html += rows.map(cardHtml).join('');
+      }
+      html += '</section>';
+    }
+    $('content').innerHTML = html;
+
+    // wire save buttons
+    document.querySelectorAll('[data-save]').forEach((btn) => {
+      btn.addEventListener('click', () => saveReview(btn.getAttribute('data-save')));
+    });
+  }
+
+  function cardHtml(s) {
+    const status = STATUSES.includes(s.review_status) ? s.review_status : 'unreviewed';
+    const url = safeUrl(s.portfolio_url);
+    const urlHtml = url
+      ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(s.portfolio_url) + '</a>'
+      : esc(s.portfolio_url);
+    const lastReviewed = s.reviewed_by
+      ? '<div class="last-review">Last reviewed by <strong>' + esc(s.reviewed_by) + '</strong> · ' + esc(fmtDate(s.reviewed_at)) + '</div>'
+      : '';
+    const options = STATUSES.map((st) =>
+      '<option value="' + st + '"' + (st === status ? ' selected' : '') + '>' + st + '</option>').join('');
+
+    return '' +
+      '<div class="card" data-id="' + s.id + '">' +
+        '<div class="card-top">' +
+          '<div class="who">' +
+            '<h3>' + esc(s.name) + '</h3>' +
+            '<div class="card-meta">' +
+              '<span class="lbl">Email:</span> <a href="mailto:' + esc(s.email) + '">' + esc(s.email) + '</a><br>' +
+              '<span class="lbl">Portfolio:</span> ' + urlHtml + '<br>' +
+              '<span class="lbl">Submitted:</span> ' + esc(fmtDate(s.created_at)) +
+            '</div>' +
+          '</div>' +
+          '<span class="badge ' + status + '" data-badge>' + status + '</span>' +
+        '</div>' +
+        '<details class="reflection"><summary>Reflection — what they learned &amp; how they grew</summary>' +
+          '<div class="body">' + esc(s.reflection) + '</div></details>' +
+        '<div class="review-row">' +
+          '<div><label>Status</label><select data-status>' + options + '</select></div>' +
+          '<div><label>Reviewer notes</label><textarea data-notes placeholder="Notes visible to all reviewers…">' + esc(s.reviewer_notes) + '</textarea></div>' +
+          '<div class="save-col"><label>&nbsp;</label>' +
+            '<button class="btn btn--primary" type="button" data-save="' + s.id + '">Save</button>' +
+            '<span class="save-note" data-note></span>' +
+          '</div>' +
+        '</div>' +
+        lastReviewed +
+      '</div>';
+  }
+
+  async function saveReview(id) {
+    const card = document.querySelector('.card[data-id="' + id + '"]');
+    if (!card) return;
+    const status = card.querySelector('[data-status]').value;
+    const notes = card.querySelector('[data-notes]').value;
+    const noteEl = card.querySelector('[data-note]');
+    const btn = card.querySelector('[data-save]');
+    noteEl.className = 'save-note'; noteEl.textContent = '';
+    btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Saving…';
+    try {
+      const res = await fetch('/api/admin/review', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id: Number(id), review_status: status, reviewer_notes: notes }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.ok) throw new Error((body && body.error) || ('HTTP ' + res.status));
+      const upd = body.submission || {};
+      // reflect verified state locally
+      const rec = DATA.find((s) => String(s.id) === String(id));
+      if (rec) { rec.review_status = upd.review_status; rec.reviewer_notes = upd.reviewer_notes; rec.reviewed_by = upd.reviewed_by; rec.reviewed_at = upd.reviewed_at; }
+      const badge = card.querySelector('[data-badge]');
+      badge.className = 'badge ' + (upd.review_status || status);
+      badge.textContent = upd.review_status || status;
+      let lr = card.querySelector('.last-review');
+      const lrHtml = 'Last reviewed by <strong>' + esc(upd.reviewed_by) + '</strong> · ' + esc(fmtDate(upd.reviewed_at));
+      if (!lr) { lr = document.createElement('div'); lr.className = 'last-review'; card.appendChild(lr); }
+      lr.innerHTML = lrHtml;
+      noteEl.className = 'save-note ok'; noteEl.textContent = 'Saved';
+    } catch (e) {
+      noteEl.className = 'save-note err'; noteEl.textContent = 'Failed: ' + e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = orig;
+    }
+  }
+
+  function exportCSV() {
+    const cols = ['id', 'category', 'name', 'email', 'portfolio_url', 'review_status',
+      'reviewer_notes', 'reviewed_by', 'reviewed_at', 'created_at', 'updated_at', 'reflection'];
+    const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const lines = [cols.join(',')];
+    // export in the same grouped order shown on screen
+    for (const cat of CATEGORIES) {
+      DATA.filter((s) => s.category === cat.key).forEach((s) => {
+        lines.push(cols.map((c) => q(s[c])).join(','));
+      });
+    }
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'gpc-submissions.csv';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  $('refresh-btn').addEventListener('click', load);
+  $('csv-btn').addEventListener('click', exportCSV);
+  load();
+</script>
+</body>
+</html>
