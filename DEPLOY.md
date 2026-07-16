@@ -125,10 +125,8 @@ wrangler d1 execute gpc_submissions --remote --json \
   --command="SELECT * FROM submissions ORDER BY category, created_at" > submissions.json
 ```
 
-> **PII:** entries contain student names + emails. Keep exports off shared drives, and if you
-> want an in-browser review screen instead of the CLI, put it behind **Cloudflare Access** and
-> verify the JWT in the Function (see the `pages-functions-and-access-jwt` pattern) — ask and
-> I'll build it.
+> **PII:** entries contain student names + emails. Keep exports off shared drives. There is also an
+> in-browser, Access-gated reviewer console at `/review` — see **Review UI** below.
 
 ---
 
@@ -138,3 +136,48 @@ wrangler d1 execute gpc_submissions --remote --json \
   "closed" message.
 - **Early close:** set the Pages var `SUBMISSIONS_OPEN=false` (redeploy or update in the
   dashboard) — no code change needed.
+
+---
+
+## Review UI (Access-gated)
+
+An in-browser reviewer console lives at **`/review`** (`review.html`), backed by two Access-gated
+Functions: `GET /api/admin/list` and `POST /api/admin/review`. It is a **shared** tool — all reviewers
+see all submissions, notes, and status changes; `reviewed_by` / `reviewed_at` record who last touched
+an entry. No per-reviewer isolation.
+
+**Reviewers (allowlist):**
+- `correia@gonzaga.edu`
+- `lebretj@gonzaga.edu`
+- `reesee2@gonzaga.edu`
+
+### Required: Cloudflare Access self-hosted application
+
+The review UI is **not usable until you configure an Access application in the dashboard.** The
+in-code JWT check + allowlist (`functions/api/_lib/identity.js`) is defense-in-depth on top of it:
+`/api/admin/*` already fails closed (403) without a valid reviewer JWT, but the `/review` page HTML is
+public until Access gates it — so configure Access before sharing the link.
+
+1. Cloudflare dashboard → **Zero Trust → Access → Applications → Add an application → Self-hosted**.
+2. **Application paths** — cover BOTH the page and the API on the Pages domain:
+   - `gu-summer-portfolio-26.pages.dev/review`
+   - `gu-summer-portfolio-26.pages.dev/api/admin/*`
+3. **Login method** — one-time PIN (email) is simplest, or your IdP.
+4. **Policy** → action **Allow**, rule **Emails** = the three reviewer addresses above.
+5. Team domain is `frosty-voice-866c.cloudflareaccess.com` (hardcoded default in `identity.js`;
+   override with the `ACCESS_TEAM_DOMAIN` Pages var if it ever changes).
+6. **Recommended:** copy the application's **Audience (AUD) tag** and set it as the Pages var
+   `ACCESS_AUD`. `identity.js` then also verifies the JWT `aud`, so only tokens minted for THIS
+   application are accepted. Without it, signature + `exp` + the email allowlist still apply.
+
+### Keeping the allowlist in sync
+
+Reviewer emails are hardcoded in **`functions/api/_lib/identity.js`** (the `REVIEWERS` set) **and** in
+the Access policy. If reviewers change, update **both** and redeploy — they are intentionally
+duplicated (belt-and-suspenders); neither alone is sufficient.
+
+### Local-dev note
+
+There is no real Access JWT locally. `identity.js` supports a decode-only mode (`ACCESS_JWT_VERIFY=off`)
+that skips only the signature check while still requiring a token and enforcing `exp` + the allowlist —
+for local testing only. It must **never** be set in production (unset = full verification, fail-closed).

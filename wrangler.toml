@@ -6,6 +6,7 @@ compatibility_date = "2026-01-01"
 [vars]
 SUBMISSIONS_OPEN = "true"                       # flip to "false" to hard-close submissions early
 DEADLINE_ISO     = "2026-08-24T23:59:59-07:00"  # Aug 24, 2026 · 11:59pm Pacific — server rejects after this
+ACCESS_AUD       = "9044099ecd1789f3e4783f86af8ce19928d50e39943529a688b5691d19dc1b9d"  # Access app Audience tag — identity.js verifies the JWT aud claim against this
 # Turnstile is REQUIRED (bot gate). Set the secret with: wrangler pages secret put TURNSTILE_SECRET
 # and paste the public site key into submit.html. The form fails closed until BOTH are set — see DEPLOY.md.
 
