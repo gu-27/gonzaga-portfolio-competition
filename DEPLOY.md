@@ -64,6 +64,12 @@ The endpoint fails closed: no secret → `503`, missing/invalid token → `403`.
 For local testing, Cloudflare's always-pass test keys work: site `1x00000000000000000000AA`,
 secret `1x0000000000000000000000000000000AA`.
 
+> **IMPORTANT:** Cloudflare Pages environment variables and secrets bind at deploy time. Setting or
+> changing `TURNSTILE_SECRET` (or any env var) does NOT affect the currently-running deployment — you
+> must redeploy afterward for the change to take effect. Set secrets BEFORE deploying, or redeploy
+> after any secret change. Symptom if you forget: `/api/submit` returns 503 "Submissions are
+> temporarily unavailable" even though the secret shows as set in the dashboard.
+
 ---
 
 ## Rate Limiting (Cloudflare WAF)
@@ -71,6 +77,11 @@ secret `1x0000000000000000000000000000000AA`.
 Turnstile stops bots; these WAF rules bound raw request volume per IP as defense-in-depth.
 They are Cloudflare zone config (not code), documented here so they can be re-created exactly
 if the project ever migrates.
+
+> **NOTE:** Cloudflare rate limiting rules require a zone (a domain in your account). They cannot be
+> configured for a bare `*.pages.dev` URL. These rules become available only if/when a custom domain
+> is attached. Until then, Turnstile plus the `UNIQUE(email, category)` dedup constraint are the
+> active abuse controls.
 
 **Where to click:** Cloudflare dashboard → pick the account → open the site's **zone/domain** →
 **Security** → **WAF** → **Rate limiting rules** tab → **Create rule**. (On some plans it appears
